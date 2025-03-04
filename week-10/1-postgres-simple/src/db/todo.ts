@@ -10,7 +10,14 @@ import { client } from "..";
  * }
  */
 export async function createTodo(userId: number, title: string, description: string) {
+    const res= await client.query( 
+        `INSERT INTO todos (user_id, title, description) 
+         VALUES ($1, $2, $3) 
+         RETURNING *;`,
+        [userId, title, description]
+        );
     
+    return res.rows[0]; 
 }
 /*
  * mark done as true for this specific todo.
@@ -37,5 +44,5 @@ export async function updateTodo(todoId: number) {
  * }]
  */
 export async function getTodos(userId: number) {
-
+    
 }
