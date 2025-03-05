@@ -30,7 +30,13 @@ export async function createTodo(userId: number, title: string, description: str
  * }
  */
 export async function updateTodo(todoId: number) {
-
+    const res= await client.query(
+        `UPDATE todos SET done= true 
+        WHERE id= $1 
+        RETURNING * ; ` ,
+        [todoId]
+    );
+    return res.rows[0];
 }
 
 /*
@@ -44,5 +50,10 @@ export async function updateTodo(todoId: number) {
  * }]
  */
 export async function getTodos(userId: number) {
-    
+    const res = await client.query(
+        `SELECT * FROM todos 
+        WHERE id= $1;`,
+        [userId]
+    );
+    return res.rows;
 }
